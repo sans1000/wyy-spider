@@ -11,8 +11,16 @@ from qt_material import apply_stylesheet
 
 class Music(object):
     def __init__(self,url,user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36 Edg/103.0.1264.49'):
-        content = self.get_music(url,user_agent)
+        idb = self.get_music_id(url)
+        urrl = 'http://music.163.com/song/media/outer/url?id=' + str(idb[0]) + '.mp3'
+        content = self.get_music(urrl,user_agent)
         self.dowload_music(content)
+
+    def get_music_id(self,url):
+        obj = re.compile(r'https://music.163.com/#/song\?id=(\d+)', re.S)
+        ida = obj.findall(url)
+        return ida
+
 
     def get_music(self,url,user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36 Edg/103.0.1264.49'):
         header = {
@@ -146,7 +154,7 @@ Dialog3 = QDialog()
 # 设置窗口标题
 w.setWindowTitle("wyy音乐下载小工具")
 w.resize(300,330)
-w.setWindowIcon(QIcon('icon.png'))
+w.setWindowIcon(QIcon('icon.ico'))
 
 apply_stylesheet(w, theme='dark_teal.xml')
 
